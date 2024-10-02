@@ -8,4 +8,3 @@ root.render(
     <App />
   </React.StrictMode>
 );
-//초기화
