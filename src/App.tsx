@@ -1,6 +1,12 @@
-import { createGlobalStyle } from "styled-components";
 import Router from "./Router";
+import { createGlobalStyle } from "styled-components";
+import { ThemeProvider } from "styled-components";
+import { isDarkAtom } from "./atoms/themeAtom";
+import { lightTheme, darkTheme } from "./theme";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import styled from "styled-components";
 
+//define the global styles
 const GlobalStyle = createGlobalStyle`
 @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400&display=swap');
 html, body, div, span, applet, object, iframe,
@@ -56,7 +62,7 @@ table {
 body {
   font-family: 'Source Sans Pro', sans-serif;
   background-color:${(props) => props.theme.bgColor};
-  color:${(props) => props.theme.textColor}
+  color:${(props) => props.theme.accentC};
 }
 a {
   text-decoration:none;
@@ -64,12 +70,32 @@ a {
 }
 `;
 
+const ThemeToggle = styled.button`
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 50%;
+  color: ${(props) => props.theme.textColor};
+  z-index: 9999;
+  transition: all 0.3s ease;
+`;
+
 function App() {
+  const isDark = useRecoilValue(isDarkAtom);
+  const setIsDark = useSetRecoilState(isDarkAtom);
+  const toggleTheme = () => setIsDark((prev) => !prev);
+
   return (
-    <>
+    <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
       <GlobalStyle />
+      <ThemeToggle onClick={toggleTheme}>{isDark ? "☼" : "⏾"}</ThemeToggle>
       <Router />
-    </>
+    </ThemeProvider>
   );
 }
 
