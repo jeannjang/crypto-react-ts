@@ -3,7 +3,7 @@ import { createGlobalStyle } from "styled-components";
 import { ThemeProvider } from "styled-components";
 import { isDarkAtom } from "./atoms/themeAtom";
 import { lightTheme, darkTheme } from "./theme";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import styled from "styled-components";
 
 //define the global styles
@@ -86,8 +86,9 @@ const ThemeToggle = styled.button`
 `;
 
 function App() {
-  const isDark = useRecoilValue(isDarkAtom);
-  const setIsDark = useSetRecoilState(isDarkAtom);
+  // const isDark = useRecoilValue(isDarkAtom);
+  // const setIsDark = useSetRecoilState(isDarkAtom);
+  const [isDark, setIsDark] = useRecoilState(isDarkAtom);
   const toggleTheme = () => setIsDark((prev) => !prev);
 
   return (
